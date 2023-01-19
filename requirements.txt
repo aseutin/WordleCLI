@@ -1,0 +1,4 @@
+black
+mypy-extensions==0.4.3
+mypy==0.950
+pytest

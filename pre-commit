@@ -1,0 +1,10 @@
+docker build -t wordle-cli .
+
+echo "Running black..."
+docker run --rm --name wordle-cli-instance wordle-cli black .
+
+echo "Static type checking using mypy..."
+docker run --rm --name wordle-cli-instance wordle-cli mypy .
+
+echo "Running tests..."
+docker run --rm --name wordle-cli-instance wordle-cli py.test
