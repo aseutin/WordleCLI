@@ -29,9 +29,21 @@ docker build -t wordle-cli .
 docker run -it --rm --name wordle-cli-instance wordle-cli
 ```
 
+### Architecture overview:
+
+This project uses a MVC pattern to clearly separate out the game state from the ui. See more on MVC architecture [here](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller).
+
+To trace through the code, start with `main.py` which should take you to `controller/controller.py` which handles user triggered events (keyboard input) and makes changes accordingly. The model and the view can be understood on their own without any larger context.
+
+All dependencies and assumptions about the environment are captured via the provided `Dockerfile`.
+
+Docstrings and type hints are provided throughout the repo to further clarify things.
+
 ### Development
 
-#### Setup for local development:  # sets up git hook
+#### Setup for local development:
+
+This step sets up git pre-commit hook that runs the type checker, linter, fixer, and unit tests before allowing a local commit to be made. This is useful for maintaing code quality before anything makes it's way to the remote repo.
 
 ```
 chmod +x setup.sh
