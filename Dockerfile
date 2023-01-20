@@ -10,4 +10,6 @@ COPY . .
 ENV PYTHONPATH="/usr/src/app:$PYTHONPATH"
 RUN export PYTHONPATH
 
+RUN apt-get update && apt-get install wamerican  # install English language dict at /usr/share/dict/
+
 CMD [ "python", "main.py" ]
