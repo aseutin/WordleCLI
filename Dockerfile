@@ -7,4 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./main.py" ]
+ENV PYTHONPATH="/usr/src/app:$PYTHONPATH"
+RUN export PYTHONPATH
+
+CMD [ "python", "main.py" ]

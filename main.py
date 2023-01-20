@@ -1,1 +1,4 @@
-print("testing 1, 2, 3...")
+from controller import Controller
+
+if __name__ == "__main__":
+    Controller()
