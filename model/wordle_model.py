@@ -1,14 +1,29 @@
+"""
+The model maintains the game's state in the simplest way possible.
+"""
 import enum
 
 from datetime import date
 from pathlib import Path
+from typing import Optional, List, Tuple
+
+
+class Accuracy(enum.Enum):
+    """Enum representing the accuracy of a given character in a guess."""
+
+    ABSENT = 0
+    EXISTS = 1
+    CORRECT = 2
 
 
 class WordleModel:
     MAX_GUESSES = 6
 
-    def __init__(self):
-        self.previous_guesses = []
+    def __init__(self) -> None:
+        """Responsible for loading the vocabulary and choosing today's winning
+        word.
+        """
+        self.previous_guesses: List[Tuple[str, List[Accuracy]]] = []
 
         # load vocabulary
         self.vocabulary = []
@@ -31,10 +46,19 @@ class WordleModel:
         index = date_hash % len(self.vocabulary)
         self.winning_word = self.vocabulary[index]
 
-        self.did_win = None
+        self.did_win: Optional[bool] = None
 
-    def guess(self, word):
-        if not self.is_valid_guess(word):
+    def guess(self, word: str) -> Optional[List[Accuracy]]:
+        """Handles guesses. The game must still be ongoing and the guessed
+        word must be a part of the vocabulary and have not been guessed
+        previously.
+
+        :param word: string
+        :return: None if guess was invalid. Otherwise returns the outcome of'
+        the guess as represented by a list of Accuracy's for each character in
+        the guess.
+        """
+        if not self._is_valid_guess(word):
             return None
 
         outcome = []
@@ -55,7 +79,13 @@ class WordleModel:
 
         return outcome
 
-    def is_valid_guess(self, word):
+    def _is_valid_guess(self, word: str) -> bool:
+        """Private method used to determine whether a given word constitutes a valid guess.
+
+        :param word: string to check.
+        :return: boolean value representing whether or not the guess was a
+        valid input.
+        """
         if self.did_win is not None:
             return False
         if len(self.previous_guesses) == WordleModel.MAX_GUESSES:
@@ -65,12 +95,6 @@ class WordleModel:
         if word in [guessed_word for guessed_word, outcome in self.previous_guesses]:
             return False
         return True
-
-
-class Accuracy(enum.Enum):
-    ABSENT = 0
-    EXISTS = 1
-    CORRECT = 2
 
 
 if __name__ == "__main__":
