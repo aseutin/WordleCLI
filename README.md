@@ -12,6 +12,8 @@ If you are on mac, install docker desktop: https://docs.docker.com/engine/instal
 
 ### Running:
 
+Note: Please make sure your terminal is sized to at least 70x50 before running the application. If the window is too small, the application will throw an exception prompting you to resize the window before trying again.
+
 ```
 docker build -t wordle-cli .
 docker run -it --rm --name wordle-cli-instance wordle-cli

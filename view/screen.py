@@ -2,8 +2,6 @@ import curses
 from curses.textpad import Textbox, rectangle
 
 
-# TODO: prompt user to resize terminal window if something fails
-
 DEFAULT_PADDING_X = 3
 DEFAULT_PADDING_Y = 2
 
@@ -33,8 +31,13 @@ class Screen:
         )  # interpret key input and translate to curses special chars (ex: curses.KEY_LEFT)
 
     def add_text(self, window, x, y, message):
-        window.addstr(y, x, message)
-        window.refresh()
+        try:
+            window.addstr(y, x, message)
+            window.refresh()
+        except:
+            raise RuntimeError(
+                "Terminal window is too small, please resize your window to at least 70x50 before trying again."
+            )
 
     def add_centered_text(self, window, message):
         rows, cols = window.getmaxyx()

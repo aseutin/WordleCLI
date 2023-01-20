@@ -25,7 +25,7 @@ class WordleModel:
                 if is_alpha and not is_proper_noun and is_five_letters:
                     self.vocabulary.append(word)
 
-        # choose winning_word based on date
+        # choose winning word based on date
         today = date.today()
         date_hash = hash(today)
         index = date_hash % len(self.vocabulary)
@@ -34,11 +34,7 @@ class WordleModel:
         self.did_win = None
 
     def guess(self, word):
-        if len(self.previous_guesses) == WordleModel.MAX_GUESSES:
-            return None
-        if word not in self.vocabulary:
-            return None
-        if self.did_win == True:
+        if not self.is_valid_guess(word):
             return None
 
         outcome = []
@@ -58,6 +54,17 @@ class WordleModel:
             self.did_win = False
 
         return outcome
+
+    def is_valid_guess(self, word):
+        if self.did_win is not None:
+            return False
+        if len(self.previous_guesses) == WordleModel.MAX_GUESSES:
+            return False
+        if word not in self.vocabulary:
+            return False
+        if word in [guessed_word for guessed_word, outcome in self.previous_guesses]:
+            return False
+        return True
 
 
 class Accuracy(enum.Enum):
